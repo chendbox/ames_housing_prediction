@@ -1,170 +1,81 @@
 # Project 2 - Ames Housing Data and Kaggle Challenge
 
-Welcome to Project 2! Let's model!
+# Problem Statement
+Ames housing data is very specific. We will use the data provided by Kaggle to conduct feature engineering and train a model to predict the house sale price. We will validate few models and narrow to the best prediction model. We also make recommendation to Ames homeowners how to invest and maintain their housing properties values.
 
-**Primary Learning Objectives:**
-1. Creating and iteratively refining a regression model.
-2. Using [Kaggle](https://www.kaggle.com) to practice the modeling process.
-3. Providing business insights through reporting and presentation.
+# Summary
+Contents:
+ - background
+ - train.csv & test.csv Data cleaning
+ - feature engineering
+ - model validation and prediction
+ - recommendation
 
-You are tasked with creating a machine learning model based on the Ames Housing Dataset. This model will predict the price of a house at sale.
+# Background
+The primary learning objective is to create and refine your regression model.
+The Kaggle challenge website [Kaggle](https://www.kaggle.com) provides two data sets: train.csv, which is used for training a model. The test.csv file is used for predicting housing price based on the model from train file. I will create a machine learning model and use it to prodict the sale price. Kaggle also provides data_description.txt, which help us to understand the features columns and sample_submission.csv, which is the format that my prediciton data should be orgainized.
 
-The Ames Housing Dataset is contains over 70 columns of different features relating to houses.
+# train.csv & test.csv
+train data sets, 2051 rows and 81 columns (79 features to describe the detailed aspects of ames house). since not all of the features is rational as predictor to sale price, we will have to refine the columns later.
+test data sets with 878 rows and 80 columns, have the exact same feature columns as train, except for price, which we need to predict and submission the prediction.
 
----
-## Deliverables 
-
-- We are hosting a competition on Kaggle to give you the opportunity to practice your modeling skills. You must upload at least one of your model's predictions to the competition.
-- You will submit a technical report and a presentation in your submission Repo. 
-- You will present your findings to your classmates and instructors.
-
-**You may find that the best model for Kaggle is not the best model to address your data science problem.**
-
-
-## Set up
-
-Before you begin working on this project, please do the following:
-
-1. Sign up for an account on [Kaggle](https://www.kaggle.com/)
-2. **IMPORTANT**: Click here: [Kaggle Competition](https://www.kaggle.com/c/dsir-deckard-p2) to **join** the competition (otherwise you will not be able to make submissions!)
-3. Review the material on the Kaggle challenge site.
-4. Review the [data description](http://jse.amstat.org/v19n3/decock/DataDocumentation.txt).
-
-## The Modeling Process
-
-1. The train dataset has all of the columns that you will need to generate and refine your models. The test dataset has all of those columns except for the target that you are trying to predict in your Regression model.
-2. Generate your regression model using the training data. We expect that within this process, you'll be making use of:
-    - train-test split
-    - cross-validation / grid searching for hyperparameters
-    - strong exploratory data analysis to question correlation and relationship across predictive variables
-    - code that reproducibly and consistently applies feature transformation (such as the preprocessing library)
-3. Predict the values for your target column in the test dataset and submit your predictions to Kaggle to see how your model does against unknown data.
-    - **Note**: Kaggle expects to see your submissions in a specific format. Check the challenge's page to make sure you are formatting your CSVs correctly!
-    - **You are limited to models you've learned in class**. In other words, you cannot use XGBoost, Neural Networks or any other more advanced model for this project.
-4. Evaluate your models!
-    - consider your evaluation metrics
-    - consider your baseline score
-    - how can your model be used for inference?
-    - why do you believe your model will generalize to new data?
-
-## Submission
-
-- Presentation will be delivered starting at 0915 on **Friday 23 July**. 
-- Your technical report must be submitted in your submission repository by 23:59 on **Friday 23 July**.
-- The Kaggle competition will close by midnight **Saturday 24 July**.
-
-Your technical report must include:
-
-- A README.md (that isn't this file)
-- Jupyter notebook(s) with your analysis and models (renamed to describe your project)
-- Data files
-- Presentation slides
-- Any other necessary files (images, etc.)
+# Review the [data description](http://jse.amstat.org/v19n3/decock/DataDocumentation.txt).
 
 
----
+# Data Cleaning
+ 1. check the missing values first and check the column features, int, float, str...
+ 2. if the column is categorical, fill in 'NONE', if the column is numeric, fill in '0'
+ 3. there are few columns with fewer missing values, fill with the column values mean
+ 4. Observe the columns, drop 'Pool QC', 'Misc Feature', 'Alley', 'Fence', 'Fireplace Qu' obvisouly wont' signiicantly impact the price
+ 5. Match 'Garage Yr Blt' column with same year bilt and mark as int
+ 6. I will also create a column 'HouseAge' to indicate the hosue age, which possible a strong predictor
+ 
+# EDA and feature engineering
+ 1. The 'SalePrice' distribution is right scewed and transform into log to minimize the large range effect
+ 2. Plot the 'SalePrice' and modify to normal distribution by remove few outliers
+ 3. Differentiate the categorical and numeric features
+ 3. Dealing with categorical: I need to check if each categorical feature is related with Saleprice, so I define a function FP_plot that can run through all the columns and plot with 'Saleprice' to understand the features. 
+ 4. Define a function anova to conduct ANOVA analysis on catgorical features and remove the non significant features: Utiltieis, landslope
+ 5. Dealing with numeric: conduct the correlation and remove columns less than 0.15 ( very weak correlation)
+ 6. Final clean: remove ID PID, combine numeric columns to make new columns which possiblly own the same features to correlate with SalePrice
+ 7. The train data narrowed to 44 columns. We will dummify the categorical columns to set up model.
+ 8. Processing the test data with the exact same steps. 
+ 
+# modeling and validations
+ 1. Before split data, train and test data set should have same columns. Remove the missing features that is not at both sets.
+ 2. Split training and testing data with 75:25 ratio and set up random state 42 for repeatness
+ 3. Feature scaling will minimize and normalize features with relatively same weight. Apply standardscaler to transform all the train sets
+ 4. set up modeling: linear regression, ridge regression, lasso regression, and elasticnet regression
+ 5. conduct CV to optimize the hyperparameters to get the best fit model
+ 6. Compare the scores from each model and LINE assumptions
+ 
+R2 Score in Each Model
+train
+test
 
-## Presentation Structure
+======= LR =======
+0.9399908466933058
+0.8989640682617299
 
-- **Presentations should be 5-7min long**
-- Use Google Slides or some other presentation system (Keynote, Powerpoint, etc).
-- Consider your audience. 
-- Start with the **problem** you are solving.
-- Use visuals that are appropriately scaled and interpretable.
-- Talk about your procedure/methodology (high level).
-- Talk about your primary findings.
-- Make sure you provide **clear recommendations** that follow logically from your analyses and narrative and answer your data science problem.
+===== Ridge ======
+0.9346789503876216
+0.9023453814813689
 
-Be sure to rehearse and time your presentation before class.
+===== Lasso ======
+0.9399908466765434
+0.8989641638195849
 
----
+=== ElasticNet ===
+0.8451523632391718
+0.8237486833999442
+ 
+ # prediction and recommendation
+ 7. Use ridge regression to predict the test price and analyze the residuals , RSME, R2 and explain the coefficients
+ 8. Create new kaggle submission by adding id and sale price columns with values.
+ 9. check the strength of each features correlated with saleprice to make assumptions and recommendation in buisness terms
 
-## Rubric
-Your instructors will evaluate your project using the following criteria.  You should make sure that you consider and/or follow most if not all of the considerations/recommendations outlined below **while** working through your project.
+RIDGE RMSE:  18179.706506277693
 
-**Scores will be out of 27 points based on the 9 items in the rubric.** <br>
-*3 points per section*<br>
-
-| Score | Interpretation |
-| --- | --- |
-| **0** | *Project fails to meet the minimum requirements for this item.* |
-| **1** | *Project meets the minimum requirements for this item, but falls significantly short of portfolio-ready expectations.* |
-| **2** | *Project exceeds the minimum requirements for this item, but falls short of portfolio-ready expectations.* |
-| **3** | *Project meets or exceeds portfolio-ready expectations; demonstrates a thorough understanding of every outlined consideration.* |
-
-### The Data Science Process
-
-**Problem Statement**
-- Is it clear?
-- Is it reasonable?
-- Is the audience clearly identified?
-
-**Data Cleaning and EDA**
-- Are missing values dealt with?
-- Are important distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are possible modeling insights to investigate discussed?
-
-**Preprocessing and Modeling**
-- Are categorical variables one-hot encoded or encoded in another logical way?
-- Are features engineered?
-- Have the data been scaled appropriately?
-- Does the student properly split the data for validation/training purposes?
-- Does the student use feature selection to remove noisy or multi-collinear features?
-- Does the student test and evaluate a variety of model types (**AT MINIMUM:** linear regression, lasso, and ridge)?
-- Does the student defend their choice of the best model for this data and problem statement?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
-
-**Evaluation and Conceptual Understanding**
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem statement?
-- Is more than one metric uses to better assess performance?
-- Does the student correctly interpret the results of their model for purposes of inference?
-
-**Conclusion and Recommendations**
-- Are the conclusions/recommendations clearly stated?
-- Does the conclusion answer the original problem statement?
-- Is it clear how the final recommendations were reached? Do they follow logically?
-- Does the student address how their suggestions will likely benefit stakeholders?
-- Are future steps to move the project forward identified?
-
-### Organization and Professionalism
-
-**Project Organization**
-- Are modules imported correctly (using appropriate aliases)?
-- Are data imported/saved using relative paths (so someone can replicate your analysis)?
-- Does the README provide a good executive summary of the project?
-- Is Markdown formatting and comments used appropriately to communicate in the notebooks?
-- Are files & directories organized?
-- Are unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
-
-**Visualizations**
-- Are sufficient helpful visualizations provided?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
-
-**Python Syntax and Control Flow**
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follow general best practices?
-
-**Presentation**
-- Is the problem statement clearly presented?
-- Does the body of the presentation building address the problem statement and lead to the conclusion?
-- Is the conclusion/recommendations clearly stated?
-- Is the level of technicality appropriate for the intended audience?
-- Does the student deliver their message clearly?
-- Are appropriate visualizations generated for the intended audience?
-- Are visualizations useful for supporting conclusions/explaining findings?
-
-In order to pass the project, students must earn a minimum score of 1 for each category.
-- Earning below a 1 in one or more of the above categories would result in a failing project.
-- While a minimum of 1 in each category is the required threshold for graduation, students should aim to earn at least an average of 1.5 across each category. An average score below 1.5, while it may be passing, means students may want to solicit specific feedback in order to significantly improve the project before showcasing it as part of a portfolio or the job search.
-
-### REMEMBER:
-
-This is a learning environment and you are encouraged to try new things, even if they don't work out as well as you planned! While this rubric outlines what we look for in a _good_ project, it is up to you to go above and beyond to create a _great_ project. **Learn from your failures and you'll grow!**
+# Conclusion and Recommendations
+I reviewed the top 20 most influenctive features to make recommendation to home owner or investment agency where to increase the housing vlaue. Neighborhood is definitely predictor to influence the saleprice. Invest in good neighborhood such as crawfor, northridge, rather than bad neighborhood. Funcitonal Type strongly related indicates the midwest people prefer a life life with typical fucntion sections. Be sure you improve the functionallity to get a good price. Kitchen quality is also good predictor, but some may negatively predictor, such as fair ktichen which in Iowa the lowest kitchen condition, indirectly associate with the housing condition. (but i didnot analyze the interaction in this analysis). Some buiding type are also negative predictor, such as townhouse, duplex. Improve the building type and invest other buidling type such as single family. Sell or refinance house payment type in ome just constructed and sold can increase the house value.
+Improve the overall quality as well. 
