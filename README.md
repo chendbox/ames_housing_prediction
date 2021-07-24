@@ -53,21 +53,13 @@ R2 Score in Each Model
 train\n
 test
 
-======= LR =======\n
-0.9399908466933058\n
-0.8989640682617299\n
+linear regression train score: 0.9399908466933058,  test score 0.8989640682617299
 
-===== Ridge ======\n
-0.9346789503876216\n
-0.9023453814813689\n
+Ridge regression train score:  0.9346789503876216,  test score 0.9023453814813689
 
-===== Lasso ======\n
-0.9399908466765434\n
-0.8989641638195849\n
+lasso regression train score:  0.9399908466765434,  test score 0.8989641638195849
 
-=== ElasticNet ===\n
-0.8451523632391718\n
-0.8237486833999442\n
+ElasticNet regression train score: 0.8451523632391718, test score 0.8237486833999442
  
  # prediction and recommendation
  7. Use ridge regression to predict the test price and analyze the residuals , RSME, R2 and explain the coefficients
