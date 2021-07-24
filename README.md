@@ -50,24 +50,24 @@ test data sets with 878 rows and 80 columns, have the exact same feature columns
  6. Compare the scores from each model and LINE assumptions
  
 R2 Score in Each Model
-train
+train\n
 test
 
-======= LR =======
-0.9399908466933058
-0.8989640682617299
+======= LR =======\n
+0.9399908466933058\n
+0.8989640682617299\n
 
-===== Ridge ======
-0.9346789503876216
-0.9023453814813689
+===== Ridge ======\n
+0.9346789503876216\n
+0.9023453814813689\n
 
-===== Lasso ======
-0.9399908466765434
-0.8989641638195849
+===== Lasso ======\n
+0.9399908466765434\n
+0.8989641638195849\n
 
-=== ElasticNet ===
-0.8451523632391718
-0.8237486833999442
+=== ElasticNet ===\n
+0.8451523632391718\n
+0.8237486833999442\n
  
  # prediction and recommendation
  7. Use ridge regression to predict the test price and analyze the residuals , RSME, R2 and explain the coefficients
