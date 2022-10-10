@@ -35,10 +35,10 @@ test data sets with 878 rows and 80 columns, have the exact same feature columns
  2. Plot the 'SalePrice' and modify to normal distribution by remove few outliers
  3. Differentiate the categorical and numeric features
  3. Dealing with categorical: I need to check if each categorical feature is related with Saleprice, so I define a function FP_plot that can run through all the columns and plot with 'Saleprice' to understand the features. 
- 4. Define a function anova to conduct ANOVA analysis on catgorical features and remove the non significant features: Utiltieis, landslope
+ 4. Define a function anova to conduct ANOVA analysis on catgorical features and remove the non significant features: landslope, this step is very effective and lead to good rsme score
  5. Dealing with numeric: conduct the correlation and remove columns less than 0.15 ( very weak correlation)
  6. Final clean: remove ID PID, combine numeric columns to make new columns which possiblly own the same features to correlate with SalePrice
- 7. The train data narrowed to 44 columns. We will dummify the categorical columns to set up model.
+ 7. I will dummify the categorical columns of train data into numerical columns to set up model.
  8. Processing the test data with the exact same steps. 
  
 # modeling and validations
@@ -53,20 +53,25 @@ R2 Score in Each Model
 train\n
 test
 
-linear regression train score: 0.9399908466933058,  test score 0.8989640682617299
+linear regression train score: 0.9399908466933058,  test score 0.8989640682616913
 
 Ridge regression train score:  0.9346789503876216,  test score 0.9023453814813689
 
 lasso regression train score:  0.9399908466765434,  test score 0.8989641638195849
 
-ElasticNet regression train score: 0.8451523632391718, test score 0.8237486833999442
+ElasticNet regression train score: 0.8451523632391718, test score 0.8237486833999439
+
+Random Forest regression train score: 0.9846959076478049, test score 0.878616832655227
+
+XGBoost regression train score: 0.9233090353962546, test score 0.871349257274084
+
  
  # prediction and recommendation
  7. Use ridge regression to predict the test price and analyze the residuals , RSME, R2 and explain the coefficients
  8. Create new kaggle submission by adding id and sale price columns with values.
  9. check the strength of each features correlated with saleprice to make assumptions and recommendation in buisness terms
 
-RIDGE RMSE:  18179.706506277693
+RIDGE RMSE:  18179.71
 
 # Conclusion and Recommendations
 I reviewed the top 20 most influenctive features to make recommendation to home owner or investment agency where to increase the housing vlaue. Neighborhood is definitely predictor to influence the saleprice. Invest in good neighborhood such as crawfor, northridge, rather than bad neighborhood. Funcitonal Type strongly related indicates the midwest people prefer a life life with typical fucntion sections. Be sure you improve the functionallity to get a good price. Kitchen quality is also good predictor, but some may negatively predictor, such as fair ktichen which in Iowa the lowest kitchen condition, indirectly associate with the housing condition. (but i didnot analyze the interaction in this analysis). Some buiding type are also negative predictor, such as townhouse, duplex. Improve the building type and invest other buidling type such as single family. Sell or refinance house payment type in ome just constructed and sold can increase the house value.
